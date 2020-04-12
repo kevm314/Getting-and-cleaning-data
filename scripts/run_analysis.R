@@ -1,5 +1,6 @@
 
 library(dplyr)
+library(reshape2)
 
 ## LOAD DATA ##
 
@@ -55,6 +56,7 @@ merged$Activity = factor(merged$Activity, levels=as.integer(activity_labels[,1])
 ## STEP 5 ## 
 ## From the data set in step 4, creates a second, independent tidy data set 
 ## with the average of each variable for each activity and each subject.
+melted <- melt(merged, c("Subject", "Activity"))
+averaged <- dcast(melted, Subject + Activity ~ variable, mean)
 
-
-
+write.table(averaged, "tidy.txt", row.names = FALSE, quote = FALSE)
